@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  # 在每次推送到 main 分支时触发
+  push:
+    branches: [ main ]
+  # 允许你从 GitHub 的 Actions 标签页手动触发此工作流
+  workflow_dispatch:
+
+# 授予此工作流克隆仓库和创建页面部署所需的权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v6
+      - name: Install, build, and upload your site
+        uses: withastro/action@v6
+        # 以下为可选配置，可根据需要取消注释
+        # with:
+          # path: . # Astro 项目在仓库中的根位置（可选）
+          # node-version: 24 # 用于构建的 Node 版本，默认为 24（可选）
+          # package-manager: pnpm@latest # 包管理器，会根据 lockfile 自动检测（可选）
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
