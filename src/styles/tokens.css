@@ -1,0 +1,34 @@
+/* 设计变量：组件通过 var(--xxx) 引用 */
+:root {
+	color-scheme: light;
+
+	--font-sans:
+		"Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+		sans-serif;
+	--font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+
+	/* 取色自首屏图片：米白集装箱的暖调 */
+	--bg: #f6f3ec;
+	--ink: #0a0a0a;
+	--muted: #6f6a62;
+	--line: #e3ded3;
+
+	--gutter: clamp(20px, 4.5vw, 56px);
+	--max-width: 1320px;
+
+	--text-xs: 0.6875rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-display: clamp(2rem, 5vw, 3.5rem);
+
+	--hero-ink: #ffffff;
+	/* 背景图未就位时的占位渐变，以及压在图上保证可读的遮罩 */
+	--hero-scrim: linear-gradient(180deg, rgb(0 0 0 / 35%), rgb(0 0 0 / 10%) 45%, rgb(0 0 0 / 55%));
+	--hero-fallback: linear-gradient(160deg, #123037 0%, #071216 55%, #04090b 100%);
+
+	/* 首屏之下是水下：深青蓝，取色自图片底部的冷灰与 P3R 的暗刻色调 */
+	--water-top: #17434f;
+	--water-deep: #0d2530;
+	--water-ink: #e6f2f6;
+	--water-glow: #8fe4f2;
+}

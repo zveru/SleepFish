@@ -1,0 +1,9 @@
+/* 首屏下方的内容区 */
+.content {
+	/* 和首屏一样作为滚动吸附的停靠点 */
+	scroll-snap-align: start;
+	scroll-snap-stop: always;
+	min-height: 100vh;
+	min-height: 100svh;
+	background: var(--bg);
+}

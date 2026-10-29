@@ -1,0 +1,11 @@
+html,
+body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/* 整页按区块吸附：触控、键盘和 Trackpad 走原生吸附 */
+html {
+	scroll-snap-type: y mandatory;
+}

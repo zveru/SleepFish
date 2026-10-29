@@ -1,0 +1,142 @@
+/* Welcome 首屏样式，选择器统一挂在 .welcome 下 */
+.welcome {
+	position: relative;
+	/* 滚动吸附的停靠点：一次滚动最多落到下一个区块 */
+	scroll-snap-align: start;
+	scroll-snap-stop: always;
+	display: grid;
+	place-items: center;
+	min-height: 100vh;
+	min-height: 100svh;
+	overflow: hidden;
+	background: var(--hero-fallback);
+	color: var(--hero-ink);
+	font-family: var(--font-sans);
+	text-align: center;
+	/* 由 hero-scroll.ts 写入的滚动进度（0–1）换算出的淡出系数 */
+	--fade: clamp(0, calc(1 - var(--scroll-progress, 0) * 1.4), 1);
+}
+
+/* 背景图铺满首屏，遮罩压在图上保证文字对比度 */
+.welcome__media,
+.welcome__media img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/* 滚动推近：横幅缩放跟着 --scroll-progress 走，焦点略高于中点 */
+.welcome__media img {
+	object-fit: cover;
+	transform: scale(calc(1 + 0.15 * var(--scroll-progress, 0)));
+	transform-origin: 50% 42%;
+	will-change: transform;
+}
+
+.welcome__media::after {
+	position: absolute;
+	inset: 0;
+	background: var(--hero-scrim);
+	content: "";
+}
+
+.welcome__content {
+	position: relative;
+	z-index: 1;
+	max-width: 100%;
+	padding-inline: var(--gutter);
+	opacity: var(--fade);
+	translate: 0 calc(var(--scroll-progress, 0) * -20px);
+}
+
+.welcome h1 {
+	margin: 0;
+	font-size: var(--text-display);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	line-height: 1.15;
+	text-shadow: 0 2px 24px rgb(0 0 0 / 35%);
+}
+
+.welcome__subtitle {
+	margin: 16px 0 0;
+	font-size: clamp(var(--text-sm), 1.6vw, 1.05rem);
+	letter-spacing: 0.08em;
+	line-height: 1.7;
+	opacity: 0.9;
+	text-shadow: 0 1px 12px rgb(0 0 0 / 40%);
+}
+
+/* 打字机光标：只在 JS 接管后显示 */
+.welcome__caret {
+	display: none;
+	width: 1px;
+	height: 1em;
+	margin-left: 2px;
+	background: currentColor;
+	vertical-align: -0.12em;
+	animation: caret-blink 1s steps(1) infinite;
+}
+
+.welcome.is-typing .welcome__caret {
+	display: inline-block;
+}
+
+.welcome__scroll {
+	position: absolute;
+	bottom: clamp(20px, 4vh, 40px);
+	left: 50%;
+	translate: -50% 0;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	color: var(--hero-ink);
+	opacity: calc(var(--fade) * 0.85);
+	transition: opacity 200ms ease;
+}
+
+.welcome__scroll:hover {
+	opacity: var(--fade);
+}
+
+.welcome__scroll svg {
+	width: 26px;
+	height: 26px;
+	animation: scroll-hint 2s ease-in-out infinite;
+}
+
+.welcome .sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+@keyframes caret-blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+@keyframes scroll-hint {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(6px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.welcome__caret,
+	.welcome__scroll svg {
+		animation: none;
+	}
+}

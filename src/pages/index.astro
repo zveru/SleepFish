@@ -1,9 +1,16 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
+import Welcome from "../components/Welcome.astro";
+import Layout from "../layouts/Layout.astro";
+import "../styles/content.css";
 ---
 
 <Layout>
 	<Welcome />
+	<section id="content" class="content" data-snap-section></section>
 </Layout>
+
+<script>
+	import { initSnapScroll } from "../scripts/snap-scroll";
+
+	initSnapScroll();
+</script>

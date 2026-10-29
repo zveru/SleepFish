@@ -1,46 +1,37 @@
-# Astro Starter Kit: Basics
+# SleepFish
 
-```sh
-npm create astro@latest -- --template basics
-```
+一个静态的个人博客仓库
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+基于 Astro 7 的静态站点。
 
-## 🚀 Project Structure
+## 当前进度
 
-Inside of your Astro project, you'll see the following folders and files:
+- 首屏欢迎页：全屏背景图 + 居中站名 + 逐字副标题 + 向下箭头
+
+## 目录结构
 
 ```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
+├── public/                  # 原样拷贝到站点根目录的静态文件
+├── src/
+│   ├── components/
+│   │   └── Welcome.astro    # 首屏：结构 + 内容 props
+│   ├── images/              # 背景图等源图片（参与 Astro 图片优化）
+│   ├── layouts/
+│   │   └── Layout.astro     # html / head / body / main 外壳
+│   ├── pages/
+|	|	├── blog/            # 用来放博客文章的文件夹
+│   │   └── index.astro      # 首页
+│   ├── scripts/
+│   │   └── typewriter.ts    # 打字机效果
+│   └── styles/
+│       ├── tokens.css       # 设计变量（只放变量）
+│       └── welcome.css      # 首屏样式，选择器统一挂在 .welcome 下
+├── astro.config.mjs
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 借物表
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- 欢迎页背景图@こうこうや pid：118616623
+- 
