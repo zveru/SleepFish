@@ -26,7 +26,7 @@
 	--hero-scrim: linear-gradient(180deg, rgb(0 0 0 / 35%), rgb(0 0 0 / 10%) 45%, rgb(0 0 0 / 55%));
 	--hero-fallback: linear-gradient(160deg, #123037 0%, #071216 55%, #04090b 100%);
 
-	/* 首屏之下是水下：深青蓝，取色自图片底部的冷灰与 P3R 的暗刻色调 */
+	/* 首屏之下是水下 */
 	--water-top: #17434f;
 	--water-deep: #0d2530;
 	--water-ink: #e6f2f6;

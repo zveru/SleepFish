@@ -1,0 +1,73 @@
+/* 内页左上角的返回，只用箭头和文字，和首页导航同一套字重与字距 */
+.backnav {
+	position: fixed;
+	z-index: 20;
+	top: 0;
+	left: var(--gutter);
+	display: flex;
+	align-items: center;
+	/* 和首页导航同高，文字落在同一条水平线上 */
+	height: clamp(56px, 7vh, 68px);
+	color: var(--hero-ink);
+	font-family: var(--font-sans);
+	font-size: var(--text-sm);
+	letter-spacing: 0.08em;
+	text-decoration: none;
+}
+
+.backnav__inner {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	opacity: 0.82;
+	transition: opacity 160ms ease;
+}
+
+/* 顶部一层极淡的暗角：内容滚到返回链接后面时不至于白字压白字 */
+.backnav::before {
+	position: fixed;
+	z-index: -1;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 120px;
+	background: linear-gradient(180deg, rgb(6 18 24 / 0.78), rgb(6 18 24 / 0) 92%);
+	content: "";
+	pointer-events: none;
+}
+
+.backnav:hover .backnav__inner {
+	opacity: 1;
+}
+
+/* 焦点框只包住文字，不跟着整条命中区拉高 */
+.backnav:focus-visible {
+	outline: none;
+}
+
+.backnav:focus-visible .backnav__inner {
+	border-radius: 2px;
+	outline: 2px solid var(--water-glow);
+	outline-offset: 5px;
+}
+
+.backnav__arrow {
+	width: 1em;
+	height: 1em;
+	transition: transform 160ms ease;
+}
+
+.backnav:hover .backnav__arrow {
+	transform: translateX(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.backnav__inner,
+	.backnav__arrow {
+		transition: none;
+	}
+
+	.backnav:hover .backnav__arrow {
+		transform: none;
+	}
+}

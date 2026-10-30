@@ -1,0 +1,31 @@
+---
+import "../styles/nav.css";
+
+// href 先占位，等对应页面建好再改成真实路径
+const links = [
+	{ label: "关于", href: `${import.meta.env.BASE_URL}about/` },
+	{ label: "博客", href: "#" },
+	{ label: "归档", href: "#" },
+];
+---
+
+<header class="nav">
+	<a class="nav__brand" href={import.meta.env.BASE_URL}>SleepFish</a>
+
+	<nav class="nav__links" aria-label="主导航">
+		{
+			links.map(({ label, href }) => (
+				<a href={href} data-placeholder={href === "#" ? "" : undefined}>
+					{label}
+				</a>
+			))
+		}
+	</nav>
+</header>
+
+<script>
+	// 对应页面还没建，占位链接点下去不做跳转
+	document.querySelectorAll<HTMLAnchorElement>(".nav__links a[data-placeholder]").forEach((link) => {
+		link.addEventListener("click", (event) => event.preventDefault());
+	});
+</script>

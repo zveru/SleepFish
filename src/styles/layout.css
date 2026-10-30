@@ -5,7 +5,7 @@ body {
 	height: 100%;
 }
 
-/* 整页按区块吸附：触控、键盘和 Trackpad 走原生吸附 */
-html {
+/* 整页按区块吸附：只在首页生效，内页是长内容，不能被吸成一屏一屏 */
+html[data-snap] {
 	scroll-snap-type: y mandatory;
 }

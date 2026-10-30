@@ -15,6 +15,7 @@ export function initHeroScroll(): void {
 		const height = hero.offsetHeight || window.innerHeight;
 		const progress = Math.min(Math.max(window.scrollY / height, 0), 1);
 		hero.style.setProperty("--scroll-progress", progress.toFixed(3));
+		document.documentElement.style.setProperty("--transition-progress", progress.toFixed(3));
 	};
 
 	const onScroll = () => {

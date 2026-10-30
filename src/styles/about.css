@@ -1,0 +1,278 @@
+/* About：一页自述。头像像一张压在书里的照片，下面是名字、说明和借物表 */
+.about {
+	position: relative;
+	isolation: isolate;
+	display: grid;
+	grid-template-rows: 1fr auto;
+	place-items: center;
+	min-height: 100vh;
+	min-height: 100svh;
+	box-sizing: border-box;
+	padding: clamp(80px, 10vh, 112px) var(--gutter) clamp(40px, 6vh, 72px);
+	background: var(--water-deep);
+	color: var(--water-ink);
+	font-family: var(--font-sans);
+	text-align: center;
+	color-scheme: dark;
+}
+
+/* 水下油画只在上半部分存在，向下化进深水，给文字留出干净的底 */
+.about__bg {
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	overflow: hidden;
+	background: var(--water-deep);
+}
+
+.about__bg img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 6%;
+	filter: brightness(0.78) contrast(1.06) saturate(0.88);
+	-webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgb(0 0 0 / 0.45) 86%, transparent 100%);
+	mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgb(0 0 0 / 0.45) 86%, transparent 100%);
+}
+
+/* 压暗：上沿保住返回链接，中部留住光柱，下沿给文字一个稳定的底 */
+.about__bg::after {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(
+			180deg,
+			rgb(6 18 24 / 0.55) 0%,
+			rgb(6 18 24 / 0.22) 22%,
+			rgb(6 18 24 / 0.52) 52%,
+			rgb(6 18 24 / 0.88) 92%
+		),
+		radial-gradient(115% 78% at 50% 6%, transparent 45%, rgb(6 18 24 / 0.45) 100%);
+	content: "";
+}
+
+.about__inner {
+	width: 100%;
+	max-width: 44rem;
+}
+
+/* 照片：白边相纸 + 白边上印一行小字，轻微倾斜 */
+.about__portrait {
+	width: clamp(184px, 16vw, 200px);
+	margin: 0 auto clamp(22px, 3.2vh, 34px);
+	padding: 9px 9px 0;
+	border-radius: 2px;
+	background: var(--bg);
+	box-shadow:
+		0 26px 54px -30px rgb(0 0 0 / 0.95),
+		0 1px 0 rgb(255 255 255 / 0.25) inset;
+	transform: rotate(-1.6deg);
+}
+
+.about__portrait img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	object-fit: cover;
+	object-position: 50% 24%;
+	border-radius: 1px;
+	filter: contrast(1.03);
+}
+
+.about__portrait figcaption {
+	padding: 7px 0 9px;
+	color: rgb(58 49 40 / 0.74);
+	font-family: var(--font-mono);
+	font-size: 0.5625rem;
+	letter-spacing: 0.2em;
+	line-height: 1;
+}
+
+.about__name {
+	margin: 0;
+	font-size: clamp(2rem, 4.4vw, 3rem);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	line-height: 1.15;
+}
+
+.about__bio {
+	/* 宽度收在 24.5em：这段句子正好在逗号后断开，且各宽度下一致 */
+	max-width: 24.5em;
+	margin: clamp(18px, 2.6vh, 26px) auto 0;
+	color: rgb(230 242 246 / 0.76);
+	font-size: clamp(0.9375rem, 1.05vw, 1rem);
+	line-height: 2;
+	text-wrap: pretty;
+}
+
+.about__links {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: clamp(20px, 3vw, 36px);
+	margin: clamp(24px, 3.4vh, 34px) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid rgb(143 228 242 / 0.3);
+	color: var(--water-ink);
+	font-size: var(--text-sm);
+	letter-spacing: 0.06em;
+	text-decoration: none;
+	transition:
+		border-color 160ms ease,
+		color 160ms ease;
+}
+
+.about__link:hover {
+	border-color: var(--water-glow);
+	color: #fff;
+}
+
+.about__link-icon {
+	width: 0.8em;
+	height: 0.8em;
+	opacity: 0.65;
+	transition:
+		opacity 160ms ease,
+		transform 160ms ease;
+}
+
+.about__link:hover .about__link-icon {
+	opacity: 1;
+	transform: translate(1px, -1px);
+}
+
+.about__link:focus-visible {
+	border-radius: 2px;
+	outline: 2px solid var(--water-glow);
+	outline-offset: 4px;
+}
+
+/* 页脚借物表：一条细线隔开，与正文同级字号，标签独占一行 */
+.about__credits {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(8px, 1.4vh, 14px);
+	width: 100%;
+	max-width: 44rem;
+	margin-top: clamp(24px, 4.2vh, 44px);
+	padding-top: clamp(14px, 2vh, 20px);
+	border-top: 1px solid rgb(230 242 246 / 0.12);
+	color: rgb(230 242 246 / 0.7);
+	font-size: clamp(0.9375rem, 1.05vw, 1rem);
+	line-height: 1.9;
+}
+
+.about__credits-label {
+	color: rgb(230 242 246 / 0.9);
+	letter-spacing: 0.18em;
+}
+
+.about__credits-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 4px 26px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about__credits-list li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: center;
+	gap: 0 8px;
+	max-width: 100%;
+}
+
+.about__credits-item {
+	color: rgb(230 242 246 / 0.7);
+}
+
+.about__credits-source {
+	color: rgb(230 242 246 / 0.9);
+}
+
+a.about__credits-source {
+	border-bottom: 1px solid rgb(143 228 242 / 0.25);
+	text-decoration: none;
+	transition:
+		border-color 160ms ease,
+		color 160ms ease;
+}
+
+a.about__credits-source:hover {
+	border-color: var(--water-glow);
+	color: #fff;
+}
+
+a.about__credits-source:focus-visible {
+	border-radius: 2px;
+	outline: 2px solid var(--water-glow);
+	outline-offset: 4px;
+}
+
+/* 从水里浮上来的一点点错峰淡入，不做花哨动效 */
+@media (prefers-reduced-motion: no-preference) {
+	.about__portrait {
+		animation: about-fade 900ms ease-out both;
+	}
+
+	.about__name,
+	.about__bio,
+	.about__links {
+		animation: about-rise 700ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+	}
+
+	.about__name {
+		animation-delay: 140ms;
+	}
+
+	.about__bio {
+		animation-delay: 220ms;
+	}
+
+	.about__links {
+		animation-delay: 300ms;
+	}
+
+	@keyframes about-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes about-rise {
+		from {
+			opacity: 0;
+			transform: translateY(12px);
+		}
+	}
+}
+
+@media (max-width: 700px) {
+	.about__portrait {
+		width: clamp(150px, 42vw, 172px);
+	}
+
+	.about__bio {
+		/* 手机上放不下整句，改用均衡断行，落在「Pages 上 / 的个人博客…」这个自然停顿处 */
+		max-width: none;
+		line-height: 1.95;
+		text-wrap: balance;
+	}
+}

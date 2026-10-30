@@ -60,6 +60,8 @@ export function initSnapScroll(): void {
 	// 站内锚点（比如首屏的向下箭头）也走同一套动画
 	document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
 		link.addEventListener("click", (event) => {
+			// href="#" 的占位链接没有目标，跳过（querySelector("") 会抛错）
+			if (link.hash.length < 2) return;
 			const target = document.querySelector<HTMLElement>(link.hash);
 			const index = target ? sections.indexOf(target) : -1;
 			if (index < 0) return;

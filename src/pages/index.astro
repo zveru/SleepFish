@@ -1,12 +1,12 @@
 ---
+import Direction from "../components/Direction.astro";
 import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
-import "../styles/content.css";
 ---
 
-<Layout>
+<Layout snap>
 	<Welcome />
-	<section id="content" class="content" data-snap-section></section>
+	<Direction />
 </Layout>
 
 <script>

@@ -1,29 +1,39 @@
 ---
+import BackNav from "../components/BackNav.astro";
+import Nav from "../components/Nav.astro";
+// 设计变量全站共用，放在 Layout 统一引入
+import "../styles/tokens.css";
 import "../styles/layout.css";
 
 interface Props {
 	title?: string;
 	description?: string;
+	/** 整页吸附，只有首页用 */
+	snap?: boolean;
+	/** 首页用带链接的导航，内页用左上角返回胶囊 */
+	nav?: "main" | "back";
 }
 
-const { title = "SleepFish", description = "" } = Astro.props;
+const { title = "SleepFish", description = "", snap = false, nav = "main" } = Astro.props;
 
 const faviconSvg = `${import.meta.env.BASE_URL}favicon.svg`;
+// 不支持 SVG 图标的老浏览器（旧 Safari、部分 Windows 环境）回退到 ICO
 const faviconIco = `${import.meta.env.BASE_URL}favicon.ico`;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-snap={snap ? "" : undefined}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href={faviconSvg} />
 		<link rel="icon" href={faviconIco} sizes="32x32" />
+		<link rel="icon" type="image/svg+xml" href={faviconSvg} sizes="any" />
 		<meta name="generator" content={Astro.generator} />
 		{description && <meta name="description" content={description} />}
 		<title>{title}</title>
 	</head>
 	<body>
+		{nav === "back" ? <BackNav /> : <Nav />}
 		<main>
 			<slot />
 		</main>

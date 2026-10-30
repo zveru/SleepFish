@@ -34,6 +34,14 @@
 	will-change: transform;
 }
 
+/* 横屏时图片下沿贴底：屏幕越宽上下裁得越多，优先保住底部的海面。
+   宽到会切到人物头部之前（约 1.85:1）就退回居中裁切。 */
+@media (min-aspect-ratio: 3/2) and (max-aspect-ratio: 9/5) {
+	.welcome__media img {
+		object-position: 50% 100%;
+	}
+}
+
 .welcome__media::after {
 	position: absolute;
 	inset: 0;
