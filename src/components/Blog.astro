@@ -1,0 +1,136 @@
+﻿---
+import "../styles/blog.css";
+
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+import avatar from "../images/f0a1281ab4ff384e3005c66c0b3afa08f7badda0_raw.jpg";
+
+interface PostItem {
+	slug: string;
+	title: string;
+	date: Date;
+	description?: string;
+	cover: ImageMetadata | null;
+}
+
+interface Props {
+	posts: PostItem[];
+}
+
+const { posts } = Astro.props;
+
+// 侧栏资料，和 about 页保持一致（以后可抽成 src/data/profile.ts 共用）
+const profile = {
+	nickname: "zre",
+	handle: "zre",
+	github: "#",
+	bio: "这是一个部署在 Cloudflare Pages 上的个人博客网站，使用 Astro 框架开发。",
+};
+
+const pad = (value: number) => String(value).padStart(2, "0");
+const formatDate = (date: Date) =>
+	`${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`;
+
+const latest = posts[0]?.date;
+const latestLabel = latest ? formatDate(latest) : "—";
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="blog" aria-labelledby="blog-title">
+	<div class="blog__grid">
+		<header class="blog__head">
+			<p class="blog__eyebrow">Blog</p>
+			<h1 class="blog__title" id="blog-title">博客</h1>
+			{
+				posts.length > 0 && (
+					<p class="blog__count">
+						{posts.length} 篇 · 最近更新 {latestLabel}
+					</p>
+				)
+			}
+		</header>
+
+		<aside class="blog__side" aria-label="站点与作者信息">
+			<div class="blog__profile">
+				<Image
+					class="blog__avatar"
+					src={avatar}
+					alt={`${profile.nickname} 的头像`}
+					widths={[72, 144]}
+					sizes="72px"
+					format="webp"
+					quality={82}
+				/>
+				<p class="blog__name">{profile.nickname}</p>
+				<p class="blog__handle">@{profile.handle}</p>
+				<p class="blog__bio">{profile.bio}</p>
+			</div>
+
+			<dl class="blog__facts">
+				<div>
+					<dt>文章</dt>
+					<dd>{posts.length}</dd>
+				</div>
+				<div>
+					<dt>最近更新</dt>
+					<dd>{latestLabel}</dd>
+				</div>
+			</dl>
+
+			<nav class="blog__links" aria-label="站点链接">
+				<a href={profile.github}>GitHub<span aria-hidden="true">↗</span></a>
+				<a href={`${base}about/`}>关于</a>
+				<a href={`${base}blog/categories/`}>分类</a>
+				<a href={base}>首页</a>
+			</nav>
+		</aside>
+
+		<div class="blog__main">
+			{
+				posts.length === 0 ? (
+					<p class="blog__empty">暂无文章</p>
+				) : (
+					<ul class="post-list">
+						{posts.map((post, index) => (
+							<li>
+								<a class="post" href={`${base}blog/${post.slug}/`} style={`--i:${index}`}>
+									{post.cover ? (
+										<span class="post__cover">
+											<Image
+												class="post__cover-img"
+												src={post.cover}
+												alt=""
+												widths={[128, 256]}
+												sizes="128px"
+												format="webp"
+												quality={78}
+												loading={index < 3 ? "eager" : "lazy"}
+											/>
+										</span>
+									) : (
+										<span class="post__cover post__cover--blank" aria-hidden="true">
+											<span>{post.title.slice(0, 1)}</span>
+										</span>
+									)}
+
+									<span class="post__body">
+										<span class="post__top">
+											<span class="post__title">{post.title}</span>
+											<time class="post__date" datetime={post.date.toISOString()}>
+												{formatDate(post.date)}
+											</time>
+										</span>
+										{post.description && (
+											<span class="post__desc">{post.description}</span>
+										)}
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</div>
+</section>

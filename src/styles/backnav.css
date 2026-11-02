@@ -71,3 +71,16 @@
 		transform: none;
 	}
 }
+
+/* 纸白页面：返回改成墨色，并去掉那层深色暗角 */
+[data-tone="light"] .backnav {
+	color: var(--ink);
+}
+
+[data-tone="light"] .backnav::before {
+	display: none;
+}
+
+[data-tone="light"] .backnav:focus-visible .backnav__inner {
+	outline-color: var(--ink);
+}

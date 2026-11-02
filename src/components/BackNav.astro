@@ -1,8 +1,15 @@
 ---
 import "../styles/backnav.css";
+
+interface Props {
+	/** 返回到哪里，默认首页 */
+	href?: string;
+}
+
+const { href = import.meta.env.BASE_URL } = Astro.props;
 ---
 
-<a class="backnav" href={import.meta.env.BASE_URL}>
+<a class="backnav" href={href}>
 	<span class="backnav__inner">
 		<svg class="backnav__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
 			<path

@@ -1,0 +1,61 @@
+---
+import "../styles/post.css";
+
+import Layout from "./Layout.astro";
+
+// 文章 md 通过 frontmatter 的 layout 字段套用这个外壳
+const { frontmatter } = Astro.props as { frontmatter: Record<string, any> };
+
+const pad = (value: number) => String(value).padStart(2, "0");
+const raw = frontmatter.date;
+const date = raw instanceof Date ? raw : raw ? new Date(raw) : null;
+const valid = date && !Number.isNaN(date.getTime()) ? date : null;
+const dateLabel = valid
+	? `${valid.getFullYear()}.${pad(valid.getMonth() + 1)}.${pad(valid.getDate())}`
+	: "";
+
+const base = import.meta.env.BASE_URL;
+const title = frontmatter.title ?? "无标题";
+const tags: string[] = Array.isArray(frontmatter.tags)
+	? frontmatter.tags.filter((tag: unknown) => typeof tag === "string" && tag.trim() !== "")
+	: [];
+---
+
+<Layout
+	title={`${title} · SleepFish`}
+	description={frontmatter.description ?? ""}
+	nav="back"
+	backHref={`${base}blog/`}
+	tone="light"
+>
+	<article class="entry">
+		<header class="entry__head">
+			{
+				valid && (
+					<p class="entry__date">
+						<time datetime={valid.toISOString()}>{dateLabel}</time>
+					</p>
+				)
+			}
+			<h1 class="entry__title">{title}</h1>
+			{frontmatter.description && <p class="entry__lead">{frontmatter.description}</p>}
+			{
+				tags.length > 0 && (
+					<ul class="entry__tags" aria-label="标签">
+						{tags.map((tag) => (
+							<li class="entry__tag">{tag}</li>
+						))}
+					</ul>
+				)
+			}
+		</header>
+
+		<div class="entry__body">
+			<slot />
+		</div>
+
+		<footer class="entry__foot">
+			<a class="entry__back" href={`${base}blog/`}>‹ 返回博客</a>
+		</footer>
+	</article>
+</Layout>

@@ -1,0 +1,45 @@
+---
+import type { ImageMetadata } from "astro";
+
+import Blog from "../../components/Blog.astro";
+import Layout from "../../layouts/Layout.astro";
+
+// 同目录下的 md 就是文章，文件名即网址：sample-post.md → /blog/sample-post/
+const modules = import.meta.glob("./*.md", { eager: true }) as Record<string, any>;
+// 封面图统一放在 ./cover/ 下，交给 astro:assets 压缩
+const covers = import.meta.glob("./cover/*.{jpg,jpeg,png,webp,avif}", {
+	eager: true,
+	import: "default",
+}) as Record<string, ImageMetadata>;
+
+// frontmatter 里写 ./cover/a.jpg、cover/a.jpg 或 a.jpg 都能找到
+const resolveCover = (path?: string) => {
+	if (!path) return null;
+
+	const normalized = path.replace(/^\.\//, "");
+	const key = normalized.startsWith("cover/") ? `./${normalized}` : `./cover/${normalized}`;
+
+	return covers[key] ?? null;
+};
+
+const posts = Object.entries(modules)
+	.map(([file, mod]) => {
+		const slug = file.replace(/^\.\//, "").replace(/\.md$/, "");
+		const data = mod.frontmatter ?? {};
+
+		return {
+			slug,
+			title: data.title ?? slug,
+			date: data.date instanceof Date ? data.date : new Date(data.date ?? 0),
+			description: data.description,
+			draft: data.draft === true,
+			cover: resolveCover(data.cover),
+		};
+	})
+	.filter((post) => !post.draft && !Number.isNaN(post.date.getTime()))
+	.sort((a, b) => b.date.getTime() - a.date.getTime());
+---
+
+<Layout title="博客 · SleepFish" description="SleepFish 的文章目录。" nav="back" tone="light">
+	<Blog posts={posts} />
+</Layout>
