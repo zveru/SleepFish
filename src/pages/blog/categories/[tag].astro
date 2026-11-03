@@ -1,0 +1,46 @@
+---
+import "../../../styles/categories.css";
+
+import Layout from "../../../layouts/Layout.astro";
+import PostCard from "../../../components/PostCard.astro";
+import { tagGroups, type TagGroup } from "../../../lib/posts";
+
+// 每个标签生成一个页面：/blog/categories/Astro/
+export function getStaticPaths() {
+	return tagGroups.map((group) => ({
+		params: { tag: group.slug },
+		props: { group },
+	}));
+}
+
+const { group } = Astro.props as { group: TagGroup };
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout
+	title={`${group.tag} · 分类 · SleepFish`}
+	description={`SleepFish 中标签为「${group.tag}」的文章。`}
+	nav="back"
+	backHref={`${base}blog/categories/`}
+	tone="light"
+>
+	<section class="cats" aria-labelledby="tag-title">
+		<header class="cats__head">
+			<p class="cats__eyebrow">Category</p>
+			<h1 class="cats__title" id="tag-title">{group.tag}</h1>
+			<p class="cats__meta">{group.posts.length} 篇文章</p>
+		</header>
+
+		<ul class="post-list cats__cards">
+			{
+				group.posts.map((post, index) => (
+					<PostCard post={post} index={index} base={base} />
+				))
+			}
+		</ul>
+
+		<footer class="cats__foot">
+			<a class="cats__back" href={`${base}blog/categories/`}>‹ 返回分类</a>
+		</footer>
+	</section>
+</Layout>

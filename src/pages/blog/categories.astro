@@ -1,0 +1,79 @@
+---
+import "../../styles/categories.css";
+
+import Layout from "../../layouts/Layout.astro";
+import { formatDate, posts, tagGroups, tagHref } from "../../lib/posts";
+
+/** 每个标签在分类页最多列 4 篇，剩下的进标签页 */
+const PREVIEW = 4;
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout
+	title="分类 · SleepFish"
+	description="按标签浏览 SleepFish 的文章。"
+	nav="back"
+	backHref={`${base}blog/`}
+	tone="light"
+>
+	<section class="cats" aria-labelledby="cats-title">
+		<header class="cats__head">
+			<p class="cats__eyebrow">Categories</p>
+			<h1 class="cats__title" id="cats-title">分类</h1>
+			{
+				posts.length > 0 && (
+					<p class="cats__meta">
+						{tagGroups.length} 个标签 · {posts.length} 篇文章
+					</p>
+				)
+			}
+		</header>
+
+		{
+			posts.length === 0 ? (
+				<p class="cats__empty">暂无文章</p>
+			) : (
+				<>
+					<nav class="cats__index" aria-label="标签索引">
+						{tagGroups.map((group) => (
+							<a href={tagHref(group)}>
+								<span>{group.tag}</span>
+								<span class="cats__count">{group.posts.length}</span>
+							</a>
+						))}
+					</nav>
+
+					<div class="cats__groups">
+						{tagGroups.map((group) => (
+							<section class="cats__group" aria-labelledby={`cat-${group.slug}`}>
+								<h2 class="cats__group-head" id={`cat-${group.slug}`}>
+									<span class="cats__group-name">{group.tag}</span>
+									<span class="cats__group-count">{group.posts.length} 篇</span>
+								</h2>
+								<ul class="cats__list">
+									{group.posts.slice(0, PREVIEW).map((post) => (
+										<li>
+											<a class="cats__post" href={`${base}blog/${post.slug}/`}>
+												<span class="cats__post-title">{post.title}</span>
+												<time class="cats__post-date" datetime={post.date.toISOString()}>
+													{formatDate(post.date)}
+												</time>
+											</a>
+										</li>
+									))}
+								</ul>
+								{group.posts.length > PREVIEW && (
+									<a class="cats__more" href={tagHref(group)}>
+										查看更多（共 {group.posts.length} 篇）
+										<span aria-hidden="true">→</span>
+									</a>
+								)}
+							</section>
+						))}
+					</div>
+				</>
+			)
+		}
+	</section>
+</Layout>

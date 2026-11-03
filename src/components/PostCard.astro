@@ -1,0 +1,57 @@
+---
+import "../styles/postcard.css";
+
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+	post: {
+		slug: string;
+		title: string;
+		date: Date;
+		description?: string;
+		cover: ImageMetadata | null;
+	};
+	/** 用来错开入场动画 */
+	index?: number;
+	base?: string;
+}
+
+const { post, index = 0, base = import.meta.env.BASE_URL } = Astro.props;
+
+const pad = (value: number) => String(value).padStart(2, "0");
+const dateLabel = `${post.date.getFullYear()}.${pad(post.date.getMonth() + 1)}.${pad(post.date.getDate())}`;
+---
+
+<li>
+	<a class="post" href={`${base}blog/${post.slug}/`} style={`--i:${index}`}>
+		{
+			post.cover ? (
+				<span class="post__cover">
+					<Image
+						class="post__cover-img"
+						src={post.cover}
+						alt=""
+						widths={[128, 256]}
+						sizes="128px"
+						format="webp"
+						quality={78}
+						loading={index < 3 ? "eager" : "lazy"}
+					/>
+				</span>
+			) : (
+				<span class="post__cover post__cover--blank" aria-hidden="true">
+					<span>{post.title.slice(0, 1)}</span>
+				</span>
+			)
+		}
+
+		<span class="post__body">
+			<span class="post__top">
+				<span class="post__title">{post.title}</span>
+				<time class="post__date" datetime={post.date.toISOString()}>{dateLabel}</time>
+			</span>
+			{post.description && <span class="post__desc">{post.description}</span>}
+		</span>
+	</a>
+</li>
