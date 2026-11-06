@@ -77,6 +77,14 @@ const base = import.meta.env.BASE_URL;
 					<dt>最近更新</dt>
 					<dd>{latestLabel}</dd>
 				</div>
+				<div>
+					<dt>今日访客</dt>
+					<dd data-visits-today aria-live="polite">—</dd>
+				</div>
+				<div>
+					<dt>你的 IP</dt>
+					<dd class="blog__ip" data-visits-ip>—</dd>
+				</div>
 			</dl>
 
 			<nav class="blog__links" aria-label="站点链接">
@@ -102,3 +110,9 @@ const base = import.meta.env.BASE_URL;
 		</div>
 	</div>
 </section>
+
+<script>
+	import { initVisits } from "../scripts/visits";
+
+	initVisits();
+</script>
